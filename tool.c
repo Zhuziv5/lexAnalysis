@@ -18,12 +18,16 @@ char operatorOrDelimiter[36][10] = {
 
 //定义一个标识符数组
 char IdentifierTbl[1000][50] = {""};
-
+/**
+ * read the file which contains source codes
+ * and write them into array 
+*/
 char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMode)
 {
     if (NULL == buf || NULL == filePath || NULL == accessMode)
     {
         puts("Input error!\nExit App!");
+        exit(0);
     }
     FILE *sourceCode = fopen(filePath, accessMode);
     if (NULL == sourceCode)
@@ -49,4 +53,14 @@ char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMod
     // printf("%s", buf);
     // releaseBuf();
     return 1;
+}
+
+/**
+ * Preprocess of lexical analysis
+ * Remove useless characters and commented parts
+ * 
+*/
+char filterSourceCode(char *buf, int bufStringLen)
+{
+    char tempString[10000];
 }
