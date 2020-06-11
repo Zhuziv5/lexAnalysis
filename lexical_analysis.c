@@ -14,4 +14,5 @@ int main(void)
     // printf("%lu\n", (long)strlen(buf));
     //过滤源代码中无用的部分
     filterSourceCode(buf, strlen(buf) + 1);
+    printf("%s\n", buf);
 }

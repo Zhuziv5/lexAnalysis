@@ -60,7 +60,69 @@ char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMod
  * Remove useless characters and commented parts
  * 
 */
-char filterSourceCode(char *buf, int bufStringLen)
+void filterSourceCode(char *buf, int bufStringLen)
 {
     char tempString[10000];
+    int indexTmp = 0;
+    char *cur = buf;
+    int index = -1;
+    for (int i = 0; i < bufStringLen; i++)
+    {
+        cur = &buf[i];
+        if ('/' == buf[i] && '/' == buf[i + 1])
+        {
+            index = findSubstring(cur, "\n");
+            if (index < 0)
+            {
+                puts("All codes left are comments!");
+                break;
+            }
+            i += index;
+            continue;
+        }
+        if ('/' == buf[i] && '*' == buf[i + 1])
+        {
+            index = findSubstring(cur, "*/");
+            if (index < 0)
+            {
+                puts("Wrong comments!\nExit from APP!");
+                exit(0);
+            }
+            i += index + 1;
+            continue;
+        }
+        if (buf[i] != '\n' && buf[i] != '\r' && buf[i] != '\t')
+            tempString[indexTmp++] = buf[i];
+    }
+    tempString[indexTmp] = '\0';
+    strncpy(buf, tempString, indexTmp + 1);
+}
+
+int findSubstring(char *str1, char *str2)
+{
+    if (NULL == str1 || NULL == str2 || (strlen(str1) < strlen(str2)))
+        return -1;
+    char *mainStr = str1;
+    size_t index = 0;
+    char *cur = mainStr;
+    while (cur)
+    {
+        char *strLoop = cur;
+        char *subLoop = str2;
+        while (subLoop && strLoop && *subLoop == *strLoop)
+        {
+            subLoop++;
+            strLoop++;
+        }
+        if ('\0' == *subLoop)
+            break;
+        else if ('\0' == *strLoop)
+            return -1;
+        else
+        {
+            cur++;
+            index++;
+        }
+    }
+    return index;
 }
