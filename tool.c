@@ -56,12 +56,25 @@ char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMod
 }
 
 /**
- * Preprocess of lexical analysis
- * Remove useless characters and commented parts
+ * 
+ * 
  * 
 */
+/******************************************************************************
+ * @brief   Preprocess of lexical analysis.
+ *          Remove useless characters and commented parts of the given file
+ * @param   buf      Input file
+ * @param   bufLen   file length
+ * @return  
+ * 
+******************************************************************************/
 void filterSourceCode(char *buf, int bufStringLen)
 {
+    if (NULL == buf)
+    {
+        puts("Wrong input file!\nExit from APP!");
+        exit(0);
+    }
     char tempString[10000];
     int indexTmp = 0;
     char *cur = buf;
@@ -98,6 +111,13 @@ void filterSourceCode(char *buf, int bufStringLen)
     strncpy(buf, tempString, indexTmp + 1);
 }
 
+/******************************************************************************
+ * @brief          To find a specific substring from a longer string
+ * @param   str1   main string
+ * @param   str2   substring
+ * @return  j      Return the first index where substring appears in main string
+ *          -1     Fail
+******************************************************************************/
 int findSubstring(char *str1, char *str2)
 {
     if (NULL == str1 || NULL == str2 || (strlen(str1) < strlen(str2)))
