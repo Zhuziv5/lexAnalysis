@@ -12,3 +12,11 @@ int findSubstring(char *str1, char *str2);
 char reserveWord[32][20];
 char operatorOrDelimiter[36][10];
 char IdentifierTbl[1000][50];
+
+typedef struct tokenNode
+{
+    tNode *pNode;
+    char token[20];
+    char index;
+    char reserve[3];
+} tNode;
