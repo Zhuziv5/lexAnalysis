@@ -55,11 +55,6 @@ char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMod
     return 1;
 }
 
-/**
- * 
- * 
- * 
-*/
 /******************************************************************************
  * @brief   Preprocess of lexical analysis.
  *          Remove useless characters and commented parts of the given file
@@ -145,4 +140,103 @@ int findSubstring(char *str1, char *str2)
         }
     }
     return index;
+}
+
+/******************************************************************************
+ * @brief          Create an empty list
+ * @return  j      Return the head node of the empty tNode list
+ *                 num of head represents the number of total nodes
+******************************************************************************/
+tNode *createList()
+{
+    tNode *p = NULL;
+    p = (tNode *)malloc(sizeof(tNode));
+    if (NULL == p)
+    {
+        puts("Malloc tNode error!\nExit from APP!");
+        exit(0);
+    }
+    p->pNext = NULL;
+    p->num = 0;
+    return p;
+}
+
+/******************************************************************************
+ * @brief          Add a new node to current list
+ * @param   head   node of head
+ * @param   token  new node's token
+ * @param   data   new node's num
+ * @return  head   Return the head of the list
+******************************************************************************/
+tNode *appendNode(tNode *head, char *token, unsigned char data)
+{
+    if (NULL == head)
+    {
+        puts("Node of head is null!\nCreate an empty list!");
+        return createList();
+    }
+    tNode *p = NULL;
+    tNode *pCur = head;
+
+    p = (tNode *)malloc(sizeof(tNode));
+    if (NULL == p)
+    {
+        puts("Malloc tNode error!\nExit from APP!");
+        exit(0);
+    }
+    while (pCur->pNext != NULL)
+    {
+        pCur = pCur->pNext;
+    }
+    pCur->pNext = p;
+    strncpy(p->token, token, 20);
+    p->num = data;
+    p->pNext = NULL;
+    return head;
+}
+
+/******************************************************************************
+ * @brief          Print each node of list
+ * @param   head   node of head
+ * @return  
+******************************************************************************/
+void displayList(tNode *head)
+{
+    if (NULL == head)
+    {
+        puts("Empty list!\nCreate a new list first!");
+        return 0;
+    }
+    tNode *pCur = head;
+    while (pCur->pNext != NULL)
+    {
+        printf("\"%20s\":%d\n", pCur->token, pCur->num);
+        pCur = pCur->pNext;
+    }
+}
+
+/******************************************************************************
+ * @brief          Free all nodes of list
+ * @param   head   node of head
+ * @return  
+******************************************************************************/
+void freeList(tNode *head)
+{
+    if (NULL == head)
+    {
+        puts("Empty list!\nNo need to free memory!");
+        return 0;
+    }
+    tNode *pCur = head;
+    tNode *pTmp = NULL;
+    while (pCur != NULL)
+    {
+        pTmp = pCur;
+        pCur = pCur->pNext;
+        free(pTmp);
+    }
+    pTmp = NULL;
+}
+void tokenAnalyser(char *cleanCode, int codeLength, char *token)
+{
 }
