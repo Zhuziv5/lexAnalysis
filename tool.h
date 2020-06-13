@@ -12,6 +12,7 @@ tNode *createList();
 tNode *appendNode(tNode *head, char *token, unsigned char data);
 void displayList(tNode *head);
 void freeList(tNode *head);
+size_t tokenAnalyser(char *cleanCode, char *token);
 
 char reserveWord[32][20];
 char operatorOrDelimiter[36][10];

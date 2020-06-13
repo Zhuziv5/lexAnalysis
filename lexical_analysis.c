@@ -13,4 +13,15 @@ int main(void)
     //过滤源代码中无用的部分
     filterSourceCode(buf, strlen(buf) + 1);
     // printf("%s\n", buf);
+    char *tmp = buf;
+    printf("tmp is %s\n", tmp);
+    printf("buf is %s\n", buf);
+    size_t i = 0;
+    char tokenTmp[20];
+    size_t delta = 0;
+    while (i < sizeof(tmp))
+    {
+        memset(tokenTmp, 0, 20);
+        tokenAnalyser(tmp, tokenTmp);
+    }
 }

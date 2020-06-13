@@ -237,6 +237,12 @@ void freeList(tNode *head)
     }
     pTmp = NULL;
 }
-void tokenAnalyser(char *cleanCode, int codeLength, char *token)
+/******************************************************************************
+ * @brief               To take out species code from a bunch of codes
+ * @param   cleanCode   the left of pure codes
+ * @param   token       to save the token which has been analysed already
+ * @return  delta       Return the species code's length
+******************************************************************************/
+size_t tokenAnalyser(char *cleanCode, char *token)
 {
 }
