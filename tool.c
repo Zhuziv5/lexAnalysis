@@ -1,7 +1,7 @@
 #include "tool.h"
 
 //用全局变量存储----保留字段 32个
-char reserveWord[32][20] = {
+char *reserveWord[32] = {
     "auto", "break", "case", "char", "const", "continue",
     "default", "do", "double", "else", "enum", "extern",
     "float", "for", "goto", "if", "int", "long",
@@ -10,14 +10,14 @@ char reserveWord[32][20] = {
     "volatile", "while"};
 
 //全局变量存储----界符运算符
-char operatorOrDelimiter[36][10] = {
+char *operatorOrDelimiter[36] = {
     "+", "-", "*", "/", "<", "<=", ">", ">=", "=", "==",
     "!=", ";", "(", ")", "^", ",", "\"", "\'", "#", "&",
     "&&", "|", "||", "%", "~", "<<", ">>", "[", "]", "{",
     "}", "\\", ".", "\?", ":", "!"};
 
 //定义一个标识符数组
-char IdentifierTbl[1000][50] = {""};
+char *IdentifierTbl[1000] = {""};
 /**
  * read the file which contains source codes
  * and write them into array 
@@ -56,57 +56,6 @@ char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMod
 }
 
 /******************************************************************************
- * @brief   Preprocess of lexical analysis.
- *          Remove useless characters and commented parts of the given file
- * @param   buf      Input file
- * @param   bufLen   file length
- * @return  
- * 
-******************************************************************************/
-void filterSourceCode(char *buf, int bufStringLen)
-{
-    if (NULL == buf)
-    {
-        puts("Wrong input file!\nExit from APP!");
-        exit(0);
-    }
-    char tempString[10000];
-    int indexTmp = 0;
-    char *cur = buf;
-    int index = -1;
-    for (int i = 0; i < bufStringLen; i++)
-    {
-        cur = &buf[i];
-        if ('/' == buf[i] && '/' == buf[i + 1])
-        {
-            index = findSubstring(cur, "\n");
-            if (index < 0)
-            {
-                puts("All codes left are comments!");
-                break;
-            }
-            i += index;
-            continue;
-        }
-        if ('/' == buf[i] && '*' == buf[i + 1])
-        {
-            index = findSubstring(cur, "*/");
-            if (index < 0)
-            {
-                puts("Wrong comments!\nExit from APP!");
-                exit(0);
-            }
-            i += index + 1;
-            continue;
-        }
-        if (buf[i] != '\n' && buf[i] != '\r' && buf[i] != '\t')
-            tempString[indexTmp++] = buf[i];
-    }
-    tempString[indexTmp] = '\0';
-    strncpy(buf, tempString, indexTmp + 1);
-}
-
-/******************************************************************************
  * @brief          To find a specific substring from a longer string
  * @param   str1   main string
  * @param   str2   substring
@@ -124,7 +73,7 @@ int findSubstring(char *str1, char *str2)
     {
         char *strLoop = cur;
         char *subLoop = str2;
-        while (subLoop && strLoop && *subLoop == *strLoop)
+        while (*subLoop && *strLoop && *subLoop == *strLoop)
         {
             subLoop++;
             strLoop++;
@@ -140,6 +89,33 @@ int findSubstring(char *str1, char *str2)
         }
     }
     return index;
+}
+
+/******************************************************************************
+ * @brief          Get field from a longer string
+ * @param   str1   string to be searched in
+ * @param   set    the collection of the specific field
+ * @param   setLen the length of the collection
+ * @return  num    the specific field found in the long string
+ *          -1     Fail
+******************************************************************************/
+int findFieldInString(char *str, char **set, unsigned int setLen)
+{
+    if (NULL == str || NULL == set || NULL == *set || setLen <= 0)
+        return -1;
+    int num = -1;
+    int i = 0;
+    for (; i < setLen; i++)
+    {
+        num = findSubstring(str, *set);
+        if (num >= 0)
+            break;
+        set++;
+    }
+    if (num >= 0)
+        return i + 1;
+    return -1;
+    // printf("the method  is %s\n", *set);
 }
 
 /******************************************************************************
@@ -205,7 +181,7 @@ void displayList(tNode *head)
     if (NULL == head)
     {
         puts("Empty list!\nCreate a new list first!");
-        return 0;
+        return;
     }
     tNode *pCur = head;
     while (pCur->pNext != NULL)
@@ -225,7 +201,7 @@ void freeList(tNode *head)
     if (NULL == head)
     {
         puts("Empty list!\nNo need to free memory!");
-        return 0;
+        return;
     }
     tNode *pCur = head;
     tNode *pTmp = NULL;
@@ -237,12 +213,19 @@ void freeList(tNode *head)
     }
     pTmp = NULL;
 }
-/******************************************************************************
- * @brief               To take out species code from a bunch of codes
- * @param   cleanCode   the left of pure codes
- * @param   token       to save the token which has been analysed already
- * @return  delta       Return the species code's length
-******************************************************************************/
-size_t tokenAnalyser(char *cleanCode, char *token)
+
+char isLetter(char character)
 {
+    if (character >= 'a' && character <= 'z')
+        return 1;
+    if (character >= 'A' && character <= 'Z')
+        return 1;
+    return 0;
+}
+
+char isFigure(char character)
+{
+    if (character >= '0' && character <= '9')
+        return 1;
+    return 0;
 }
