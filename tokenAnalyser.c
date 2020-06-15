@@ -6,14 +6,14 @@
  * @param   token       to save the token which has been analysed already
  * @return  delta       Return the species code's length
 ******************************************************************************/
-size_t tokenAnalyser(char *cleanCode, char *token, tNode *head)
+int tokenAnalyser(char *cleanCode, char *token, tNode *head)
 {
     if (NULL == cleanCode || NULL == token || NULL == head)
     {
         puts("Error Input!\nExit from APP!");
         exit(0);
     }
-    size_t delta = 0;
+    int delta = 0;
     char data = 0;
     int index = 0;
     while (' ' == cleanCode[delta])
@@ -35,13 +35,9 @@ size_t tokenAnalyser(char *cleanCode, char *token, tNode *head)
         token[index] = '\0';
         data = findFieldInString(token, reserveWord, RESERVE_WORD_LEN);
         if (data < 0)
-        {
             data = 100;
-        }
         else
-        {
             data += 1;
-        }
     }
     else if (isFigure(cleanCode[delta]))
     {
@@ -70,11 +66,97 @@ size_t tokenAnalyser(char *cleanCode, char *token, tNode *head)
             exit(0);
         }
         else
-        {
             data += 33;
+    }
+    else if ('<' == cleanCode[delta])
+    {
+        if ('=' == cleanCode[delta + 1])
+        {
+            token[index++] = cleanCode[delta++];
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 38;
+        }
+        else if ('<' == cleanCode[delta + 1])
+        {
+            token[index++] = cleanCode[delta++];
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 58;
+        }
+        else
+        {
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 37;
         }
     }
-
+    else if ('>' == cleanCode[delta])
+    {
+        if ('=' == cleanCode[delta + 1])
+        {
+            token[index++] = cleanCode[delta++];
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 40;
+        }
+        else if ('>' == cleanCode[delta + 1])
+        {
+            token[index++] = cleanCode[delta++];
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 59;
+        }
+        else
+        {
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 39;
+        }
+    }
+    else if ('!' == cleanCode[delta])
+    {
+        if ('=' == cleanCode[delta + 1])
+        {
+            token[index++] = cleanCode[delta++];
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 43;
+        }
+        else
+        {
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 68;
+        }
+    }
+    else if ('=' == cleanCode[delta])
+    {
+        if ('=' == cleanCode[delta + 1])
+        {
+            token[index++] = cleanCode[delta++];
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 42;
+        }
+        else
+        {
+            token[index++] = cleanCode[delta++];
+            token[index] = '\0';
+            data = 41;
+        }
+    }
+    else if ('\0' == cleanCode[delta])
+    {
+        token[index] = '\0';
+        data = 0;
+        delta = -1;
+    }
+    else
+    {
+        puts("Unrecognized character!\nCheck your code!\nExit from APP!");
+        exit(0);
+    }
     appendNode(head, token, data);
     return delta;
 }

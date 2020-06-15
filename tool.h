@@ -21,7 +21,7 @@ tNode *createList();
 tNode *appendNode(tNode *head, char *token, unsigned char data);
 void displayList(tNode *head);
 void freeList(tNode *head);
-size_t tokenAnalyser(char *cleanCode, char *token, tNode *head);
+int tokenAnalyser(char *cleanCode, char *token, tNode *head);
 int findFieldInString(char *str, char **set, unsigned int setLen);
 char isLetter(char character);
 char isFigure(char character);

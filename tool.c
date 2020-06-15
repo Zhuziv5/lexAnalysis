@@ -183,10 +183,10 @@ void displayList(tNode *head)
         puts("Empty list!\nCreate a new list first!");
         return;
     }
-    tNode *pCur = head;
+    tNode *pCur = head->pNext;
     while (pCur->pNext != NULL)
     {
-        printf("\"%20s\":%d\n", pCur->token, pCur->num);
+        printf("%-15s :    %d\n", pCur->token, pCur->num);
         pCur = pCur->pNext;
     }
 }
