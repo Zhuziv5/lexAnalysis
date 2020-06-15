@@ -32,6 +32,23 @@ char isFigure(char character);
 #define IS_BOUNDRY_OR_OPERATOR(ch) \
     ch == '*' || ch == '/' || ch == ';' || ch == '(' || ch == ')' || ch == '^' || ch == ',' || ch == '\"' || ch == '\'' || ch == '~' || ch == '#' || ch == '%' || ch == '[' || ch == ']' || ch == '{' || ch == '}' || ch == '\\' || ch == '.' || ch == '\?' || ch == ':'
 
+#define DOUBLE_CHARA_ASSIGNMENT(index, delta, num) \
+    do                                             \
+    {                                              \
+        token[index++] = cleanCode[delta++];       \
+        token[index++] = cleanCode[delta++];       \
+        token[index] = '\0';                       \
+        data = num;                                \
+    } while (0)
+
+#define SINGLE_CHARA_ASSIGNMENT(index, delta, num) \
+    do                                             \
+    {                                              \
+        token[index++] = cleanCode[delta++];       \
+        token[index] = '\0';                       \
+        data = num;                                \
+    } while (0)
+
 char *reserveWord[32];
 char *operatorOrDelimiter[36];
 char *IdentifierTbl[1000];

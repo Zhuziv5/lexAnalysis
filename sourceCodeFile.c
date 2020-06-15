@@ -4,6 +4,7 @@
 int main(void)
 {
     puts("Hello World!");
+    <=
     /*A great amout of comments! */
 }
 /*
@@ -64,6 +65,8 @@ int main(void)
 <?,66>
 <:,67>
 <!,68>
+<++,69>
+<--,70>
 <常数99  ,数值>
 <标识符100 ，标识符指针>
 */

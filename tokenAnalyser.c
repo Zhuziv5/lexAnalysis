@@ -23,15 +23,9 @@ int tokenAnalyser(char *cleanCode, char *token, tNode *head)
     memset(token, 0, TOKEN_LEN);
     if (isLetter(cleanCode[delta]) || '_' == cleanCode[delta])
     {
-        token[index] = cleanCode[delta];
-        index++;
-        delta++;
+        token[index++] = cleanCode[delta++];
         while (isLetter(cleanCode[delta]) || isFigure(cleanCode[delta]) || '_' == cleanCode[delta])
-        {
-            token[index] = cleanCode[delta];
-            delta++;
-            index++;
-        }
+            token[index++] = cleanCode[delta++];
         token[index] = '\0';
         data = findFieldInString(token, reserveWord, RESERVE_WORD_LEN);
         if (data < 0)
@@ -41,28 +35,20 @@ int tokenAnalyser(char *cleanCode, char *token, tNode *head)
     }
     else if (isFigure(cleanCode[delta]))
     {
-        token[index] = cleanCode[delta];
-        index++;
-        delta++;
+        token[index++] = cleanCode[delta++];
         while (isFigure(cleanCode[delta]))
-        {
-            token[index] = cleanCode[delta];
-            delta++;
-            index++;
-        }
+            token[index++] = cleanCode[delta++];
         token[index] = '\0';
         data = 99;
     }
     else if (IS_BOUNDRY_OR_OPERATOR(cleanCode[delta]))
     {
-        token[index] = cleanCode[delta];
-        index++;
-        delta++;
+        token[index++] = cleanCode[delta++];
         token[index] = '\0';
         data = findFieldInString(token, operatorOrDelimiter, OPERATOR_BOUNDRY_LEN);
         if (data < 0)
         {
-            puts("FindSubString Error!\nExit from APP!");
+            printf("FindSubString error in %s:%d line", __FILE__, __LINE__);
             exit(0);
         }
         else
@@ -71,80 +57,48 @@ int tokenAnalyser(char *cleanCode, char *token, tNode *head)
     else if ('<' == cleanCode[delta])
     {
         if ('=' == cleanCode[delta + 1])
-        {
-            token[index++] = cleanCode[delta++];
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 38;
-        }
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 38);
         else if ('<' == cleanCode[delta + 1])
-        {
-            token[index++] = cleanCode[delta++];
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 58;
-        }
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 58);
         else
-        {
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 37;
-        }
+            SINGLE_CHARA_ASSIGNMENT(index, delta, 37);
     }
     else if ('>' == cleanCode[delta])
     {
         if ('=' == cleanCode[delta + 1])
-        {
-            token[index++] = cleanCode[delta++];
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 40;
-        }
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 40);
         else if ('>' == cleanCode[delta + 1])
-        {
-            token[index++] = cleanCode[delta++];
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 59;
-        }
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 59);
         else
-        {
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 39;
-        }
+            SINGLE_CHARA_ASSIGNMENT(index, delta, 39);
     }
     else if ('!' == cleanCode[delta])
     {
         if ('=' == cleanCode[delta + 1])
-        {
-            token[index++] = cleanCode[delta++];
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 43;
-        }
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 43);
         else
-        {
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 68;
-        }
+            SINGLE_CHARA_ASSIGNMENT(index, delta, 68);
     }
     else if ('=' == cleanCode[delta])
     {
         if ('=' == cleanCode[delta + 1])
-        {
-            token[index++] = cleanCode[delta++];
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 42;
-        }
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 42);
         else
-        {
-            token[index++] = cleanCode[delta++];
-            token[index] = '\0';
-            data = 41;
-        }
+            SINGLE_CHARA_ASSIGNMENT(index, delta, 41);
+    }
+    else if ('+' == cleanCode[delta])
+    {
+        if ('+' == cleanCode[delta + 1])
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 33);
+        else
+            SINGLE_CHARA_ASSIGNMENT(index, delta, 69);
+    }
+    else if ('-' == cleanCode[delta])
+    {
+        if ('-' == cleanCode[delta + 1])
+            DOUBLE_CHARA_ASSIGNMENT(index, delta, 34);
+        else
+            SINGLE_CHARA_ASSIGNMENT(index, delta, 70);
     }
     else if ('\0' == cleanCode[delta])
     {
@@ -154,7 +108,7 @@ int tokenAnalyser(char *cleanCode, char *token, tNode *head)
     }
     else
     {
-        puts("Unrecognized character!\nCheck your code!\nExit from APP!");
+        printf("Unrecognized character in %s:%d line", __FILE__, __LINE__);
         exit(0);
     }
     appendNode(head, token, data);

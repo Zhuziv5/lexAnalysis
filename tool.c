@@ -168,6 +168,9 @@ tNode *appendNode(tNode *head, char *token, unsigned char data)
     strncpy(p->token, token, 20);
     p->num = data;
     p->pNext = NULL;
+
+    // free(p);
+    // p = NULL;
     return head;
 }
 

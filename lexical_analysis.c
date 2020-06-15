@@ -26,4 +26,6 @@ int main(void)
         tmp += delta;
     }
     displayList(head);
+    free(head);
+    return 0;
 }
