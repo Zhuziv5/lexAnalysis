@@ -56,11 +56,10 @@ char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMod
 }
 
 /******************************************************************************
- * @brief          To find a specific substring from a longer string
- * @param   str1   main string
- * @param   str2   substring
- * @return  j      Return the first index where substring appears in main string
- *          -1     Fail
+ * @brief          Save tokens analysed to a txt file
+ * @param   head   the head node of the linked list 
+ * @return  
+ * 
 ******************************************************************************/
 void writeTokenIntoFile(tNode *head)
 {
