@@ -25,6 +25,7 @@ int tokenAnalyser(char *cleanCode, char *token, tNode *head);
 int findFieldInString(char *str, char **set, unsigned int setLen);
 char isLetter(char character);
 char isFigure(char character);
+void writeTokenIntoFile(tNode *head);
 
 #define TOKEN_LEN 20
 #define RESERVE_WORD_LEN 32

@@ -105,6 +105,7 @@ int tokenAnalyser(char *cleanCode, char *token, tNode *head)
         token[index] = '\0';
         data = 0;
         delta = -1;
+        return delta;
     }
     else
     {

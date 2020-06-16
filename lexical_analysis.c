@@ -25,6 +25,7 @@ int main(void)
         delta = tokenAnalyser(tmp, tokenTmp, head);
         tmp += delta;
     }
+    writeTokenIntoFile(head);
     displayList(head);
     free(head);
     return 0;

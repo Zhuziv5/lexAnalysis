@@ -62,6 +62,34 @@ char readSourceCodeToBuf(char *buf, int bufSize, void *filePath, void *accessMod
  * @return  j      Return the first index where substring appears in main string
  *          -1     Fail
 ******************************************************************************/
+void writeTokenIntoFile(tNode *head)
+{
+    if (NULL == head)
+    {
+        printf("Empty linked list input %s: %d\n", __FILE__, __LINE__);
+        exit(0);
+    }
+    FILE *fp = fopen("./tokenFile.txt", "w");
+    if (NULL == fp)
+    {
+        printf("Open file error %s: %d\n", __FILE__, __LINE__);
+        exit(0);
+    }
+    tNode *cur = head->pNext;
+    while (cur != NULL)
+    {
+        fprintf(fp, "%s %d\n", cur->token, cur->num);
+        cur = cur->pNext;
+    }
+    fclose(fp);
+}
+/******************************************************************************
+ * @brief          To find a specific substring from a longer string
+ * @param   str1   main string
+ * @param   str2   substring
+ * @return  j      Return the first index where substring appears in main string
+ *          -1     Fail
+******************************************************************************/
 int findSubstring(char *str1, char *str2)
 {
     if (NULL == str1 || NULL == str2 || (strlen(str1) < strlen(str2)))
@@ -187,7 +215,7 @@ void displayList(tNode *head)
         return;
     }
     tNode *pCur = head->pNext;
-    while (pCur->pNext != NULL)
+    while (pCur != NULL)
     {
         printf("%-15s :    %d\n", pCur->token, pCur->num);
         pCur = pCur->pNext;
